@@ -121,17 +121,6 @@ DHCP melayani pool per VLAN (SnM, HRnL, FnA, AnH, IT) dengan DNS 10.33.2.134.
 - `service password-encryption` aktif.
 - **Site-to-site IPsec VPN** antara RT1 (Se0/3/0) dan Datacenter (Se0/0/0): ISAKMP AES-256, pre-shared key, group 5, transform-set `esp-aes esp-sha-hmac`. Trafik yang dienkripsi: 10.33.2.128/28 (server) ↔ 10.33.0.0/24.
 
-## Catatan / Perlu Dicek
-
-Hal-hal yang terlihat di konfigurasi dan sebaiknya diverifikasi:
-
-1. **IP duplikat**: Gi0/0 Datacenter (`10.33.2.129/28`) sama dengan SVI Vlan60 di MLS1 dan MLS2.
-2. **SVI identik di MLS1 dan MLS2**: Vlan10–60 memakai IP yang sama di kedua MLS tanpa FHRP (HSRP/VRRP), sehingga berpotensi konflik.
-3. **VPN di RT1 belum lengkap**: crypto map `VPN-MAP` tidak punya `match address`, dan ACL yang ada bernama `100` (sisi Datacenter memakai ACL `110`).
-4. `ip helper-address` di Vlan60 mengarah ke `10.33.2.133`, sedangkan server DHCP berada di `10.33.2.135`.
-5. VLAN 60 tidak terdaftar di VLAN database MLS, sedangkan SVI Vlan60 dibuat.
-6. Beberapa pool DHCP (AnH, HRnL) memiliki end IP di luar subnet /25-nya.
-7. Pre-shared key VPN dan password berada di dalam file `.pkt` yang publik. Aman untuk lab, tapi jangan dipakai ulang di jaringan nyata.
 
 ## Cara Menggunakan
 
